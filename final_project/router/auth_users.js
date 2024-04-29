@@ -58,17 +58,24 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     const review = req.body.review;
-    let rev = {
-        [username1] : review
-    };
-    
-        books[isbn].reviews = rev;
+    books[isbn].reviews[username1] = review;
     
     return res.status(200).json({message: "review submitted"});
         
         
         
 });
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    if(books[isbn].reviews.hasOwnProperty(username1)){
+        delete books[isbn].reviews[username1]; 
+        return res.status(200).json({message: "review deleted"});
+    } else {
+        return res.status(200).json({message: "you havent submitted any reviews to this book"});
+    }
+        
+});
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
